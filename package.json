@@ -15,7 +15,7 @@
     "start": "NODE_ENV=production TZ=utc node index.js",
     "dev": "NODE_ENV=development TZ=utc nodemon index.js",
     "heroku": "git push heroku master",
-    "git": "func() { git add . && git commit -m \"BUILD - $1\" && git push origin HEAD; }; func",
+    "git": "func() { git add . && git commit -m \"$1\" && git push origin HEAD; }; func",
     "test": "NODE_ENV=development nyc mocha test/*.spec.js --timeout 120000 --reporter spec --exit --full-trace"
   },
   "devDependencies": {
