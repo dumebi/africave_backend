@@ -1,0 +1,23 @@
+version: 2 # CircleCI version
+jobs:
+  build:
+    machine: true 
+    working_directory: ~/repo 
+    steps:
+        - checkout
+        - run: echo "MAIL_USER=$MAIL_USER" >> compose.env
+        - run: echo "MAIL_PASS=$MAIL_PASS" >> compose.env
+        - run: echo "JWT_SECRET=$JWT_SECRET" >> compose.env
+        - run: echo "APP_NAME=$APP_NAME" >> compose.env
+        - run: echo "MONGO_DB_DEV=$MONGO_DB_DEV" >> compose.env
+        - run: echo "NODE_ENV=$NODE_ENV" >> compose.env
+        - run: echo "REDIS_URL=$REDIS_URL" >> compose.env
+        - run: echo "AMQP_URL=$AMQP_URL" >> compose.env
+        - run: echo "PORT=$PORT" >> compose.env
+        - run: docker-compose up -d
+        - run: sleep 10s
+        - run: ./africave-test.sh
+        # - run: git remote add heroku https://git.heroku.com/backend-softcom.git
+        # - run: npm run heroku
+        - store_artifacts:
+            path: ~/repo/features/fail-screenshots
