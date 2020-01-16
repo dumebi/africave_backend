@@ -15,6 +15,9 @@ yarn.lock
 # .env
 # Dockerfile
 
+# Jest
+coverage/
+
 # Externals
 external/
 

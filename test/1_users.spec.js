@@ -1,6 +1,5 @@
 /* eslint-disable no-undef */
 const mongoose = require('mongoose');
-const expect = require('chai').expect
 const supertest = require('supertest')
 const { config } = require('../utils/utils');
 const api = supertest(`${config.host}`)
@@ -12,15 +11,21 @@ describe('Auth Test', () => {
   let rec_token = ''
 
   const username = 'onejohndoe'
-  const phone = '+2348765337488'
+  const phone = '+2348183456730'
   const password = 'John'
   const timezone = '+1'
+  let connection;
+  let db;
 
-  before(async () => {
-    console.log(config.mongo);
-    await mongoose.connect(config.mongo, { useNewUrlParser: true });
+  beforeAll(async () => {
+    connection = await mongoose.connect(config.mongo, { useNewUrlParser: true });
     await mongoose.connection.db.dropDatabase();
-  })
+  });
+
+  afterAll(async () => {
+    await connection.close();
+  });
+  
   it('Should create a user', (done) => {
     
     api
@@ -34,18 +39,18 @@ describe('Auth Test', () => {
       })
       .expect(200)
       .end((err, res) => {
-        expect(res.body.status).to.equal('success')
-        expect(res.body.message).to.equal('User created successfully')
-        expect(res.body.data._id).to.have.lengthOf.above(0)
-        expect(res.body.data.phone).to.equal(phone)
-        expect(res.body.data.username).to.equal(username)
-        expect(res.body.data.timezone).to.equal(timezone)
-        expect(res.body.data.password).to.not.equal(password)
+        expect(res.body.status).toBe('success')
+        expect(res.body.message).toBe('User created successfully')
+        expect(res.body.data._id.length).toBeGreaterThan(0)
+        expect(res.body.data.phone).toBe(phone)
+        expect(res.body.data.username).toBe(username)
+        expect(res.body.data.timezone).toBe(timezone)
+        expect(res.body.data.password).not.toBe(password)
         user_id = res.body.data._id
         user_jwt = res.body.data.token
         done()
       })
-  }).timeout(30000)
+  })
 
   it('Should login user', (done) => {
     api
@@ -57,14 +62,14 @@ describe('Auth Test', () => {
       })
       .expect(200)
       .end((err, res) => {
-        expect(res.body.status).to.equal('success')
-        expect(res.body.message).to.equal('User signed in')
-        expect(res.body.data.phone).to.equal(phone)
-        expect(res.body.data.password).to.not.equal(password)
+        expect(res.body.status).toBe('success')
+        expect(res.body.message).toBe('User signed in')
+        expect(res.body.data.phone).toBe(phone)
+        expect(res.body.data.password).not.toBe(password)
         user_jwt = res.body.data.token
         done()
       })
-  }).timeout(30000)
+  })
 
   it('Should send token', (done) => {
     api
@@ -75,13 +80,13 @@ describe('Auth Test', () => {
       })
       .expect(200)
       .end((err, res) => {
-        expect(res.body.status).to.equal('success')
-        expect(res.body.message).to.equal('Token sent')
-        expect(res.body.data.length).to.equal(5)
+        expect(res.body.status).toBe('success')
+        expect(res.body.message).toBe('Token sent')
+        expect(res.body.data.length).toBe(5)
         rec_token = res.body.data
         done()
       })
-  }).timeout(10000)
+  })
 
   it('Should reset password', (done) => {
     const token = rec_token
@@ -95,12 +100,12 @@ describe('Auth Test', () => {
       })
       .expect(200)
       .end((err, res) => {
-        expect(res.body.status).to.equal('success')
-        expect(res.body.message).to.equal('Password reset')
-        expect(res.body.data).to.equal(null)
+        expect(res.body.status).toBe('success')
+        expect(res.body.message).toBe('Password reset')
+        expect(res.body.data).toBe(null)
         done()
       })
-  }).timeout(10000)
+  })
 
   it('Should get a user', (done) => {
     api
@@ -109,12 +114,12 @@ describe('Auth Test', () => {
       .set('authorization', `Bearer ${user_jwt}`)
       .expect(200)
       .end((err, res) => {
-        expect(res.body.status).to.equal('success')
-        expect(res.body.message).to.equal('User retrieved')
-        expect(res.body.data).to.be.instanceof(Object)
+        expect(res.body.status).toBe('success')
+        expect(res.body.message).toBe('User retrieved')
+        expect(res.body.data).toBeInstanceOf(Object)
         done()
       })
-  }).timeout(10000)
+  })
 
   it('Should get all users', (done) => {
     api
@@ -123,11 +128,11 @@ describe('Auth Test', () => {
       .set('authorization', `Bearer ${user_jwt}`)
       .expect(200)
       .end((err, res) => {
-        expect(res.body.status).to.equal('success')
-        expect(res.body.message).to.equal('Users retrieved')
-        expect(res.body.data).to.be.instanceof(Array)
+        expect(res.body.status).toBe('success')
+        expect(res.body.message).toBe('Users retrieved')
+        expect(res.body.data).toBeInstanceOf(Array)
         done()
       })
-  }).timeout(10000)
+  })
 })
 

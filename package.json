@@ -11,21 +11,24 @@
     "node": "11.8.0",
     "npm": "6.8.0"
   },
+  "jest": {
+    "testEnvironment": "node",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ]
+  },
   "scripts": {
     "start": "NODE_ENV=production TZ=utc node index.js",
     "dev": "NODE_ENV=development TZ=utc nodemon index.js",
     "heroku": "git push heroku master",
     "git": "func() { git add . && git commit -m \"$1\" && git push origin HEAD; }; func",
-    "test": "NODE_ENV=development nyc mocha test/*.spec.js --timeout 120000 --reporter spec --exit --full-trace"
+    "test": "NODE_ENV=development jest --coverage --detectOpenHandles --forceExit"
   },
   "devDependencies": {
-    "chai": "^4.2.0",
     "eslint": "^5.11.1",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.14.0",
-    "mocha": "^5.2.0",
-    "nyc": "^13.3.0",
-    "supertest": "^3.3.0"
+    "jest": "^24.9.0"
   },
   "dependencies": {
     "@hapi/joi": "^16.1.7",
@@ -33,7 +36,6 @@
     "axios": "^0.18.0",
     "bcryptjs": "^2.4.3",
     "bunyan": "^1.8.12",
-    "chai": "^4.2.0",
     "compression": "^1.7.3",
     "connect-flash": "^0.1.1",
     "connect-history-api-fallback": "^1.5.0",
@@ -50,20 +52,18 @@
     "joi": "^14.3.1",
     "joi-phone-validator": "^1.0.0",
     "jsonwebtoken": "^8.3.0",
-    "mocha": "^5.2.0",
     "mongoose": "^5.3.14",
     "morgan": "~1.9.0",
     "node-cron": "^2.0.3",
     "nodemailer": "^4.6.4",
     "nodemailer-mailgun-transport": "^1.4.0",
     "nodemon": "^1.18.10",
-    "nyc": "^13.3.0",
     "p-queue": "^6.2.1",
     "randomstring": "^1.1.5",
     "redis": "^2.8.0",
     "redis-await": "^1.0.6",
     "serve-static": "^1.13.2",
-    "supertest": "^3.3.0",
+    "supertest": "^4.0.2",
     "twilio": "^3.39.2"
   }
 }
