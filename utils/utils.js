@@ -32,43 +32,6 @@ if (process.env.NODE_ENV === 'development') {
 
 console.log(this.config)
 
-exports.sendMail = (params, callback) => {
-  const email = params.email;
-  // let from_email = params.from_email;
-  const body = params.body;
-  const subject = params.subject;
-  if (email == null || body == null || subject == null) {
-    return {
-      status: 'failed',
-      err: 'the required parameters were not supplied'
-    };
-  }
-  const transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 465,
-    service: 'Gmail',
-    auth: {
-      user: process.env.MAIL_USER,
-      pass: process.env.MAIL_PASS
-    }
-  });
-
-  const mailOptions = {
-    from: 'Stackoverflow Support <support@stackoverflowclone.com>',
-    to: email,
-    subject,
-    html: body
-  };
-
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      callback(error, null);
-    } else {
-      callback(error, info.response);
-    }
-  });
-};
-
 exports.sendText = async (body, from, to) => {
   try {
     const message = await TwilioClient.messages.create({body, from, to})
@@ -89,21 +52,21 @@ exports.generateRandomNumbers = (x) => {
   return ''.concat(text);
 };
 
-exports.getUTCTime = (date, offset) => {
-  try {
-    let d = new Date(date);
-    d.setMinutes(0,0,0)
-    localTime = d.getTime();
-    localOffset = d.getTimezoneOffset() * 60000;
+// exports.getUTCTime = (date, offset) => {
+//   try {
+//     let d = new Date(date);
+//     d.setMinutes(0,0,0)
+//     localTime = d.getTime();
+//     localOffset = d.getTimezoneOffset() * 60000;
 
-    // obtain UTC time in msec
-    utc = localTime + localOffset;
-    utc = new Date(utc);
-    return utc.toISOString()
-  } catch (error) {
-    throw error;
-  }
-}
+//     // obtain UTC time in msec
+//     utc = localTime + localOffset;
+//     utc = new Date(utc);
+//     return utc.toISOString()
+//   } catch (error) {
+//     throw error;
+//   }
+// }
 
 /**
  * Check token was sent

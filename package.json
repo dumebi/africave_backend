@@ -22,7 +22,7 @@
     "dev": "NODE_ENV=development TZ=utc nodemon index.js",
     "heroku": "git push heroku master",
     "git": "func() { git add . && git commit -m \"$1\" && git push origin HEAD; }; func",
-    "test": "NODE_ENV=development jest --coverage --detectOpenHandles --forceExit"
+    "test": "NODE_ENV=development jest --coverage --runInBand --detectOpenHandles --forceExit"
   },
   "devDependencies": {
     "eslint": "^5.11.1",

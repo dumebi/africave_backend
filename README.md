@@ -18,3 +18,12 @@ Auth for user actions are done using bearer token
 # Tools/Stack
 
 NodeJs, Redis, RabbitMQ, Mongodb
+
+# Further Platform Implementation
+Microservice Architecture
+  * User Service
+  * Notifications Service
+  * Subscription Service
+
+Validations
+  * Timezone Validations

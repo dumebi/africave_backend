@@ -12,9 +12,9 @@ cron.schedule("00 00 */1 * * * *", async () => {
   scheduled: true,
 });
 
-cron.schedule("* * * * *", async () => {
-  console.log("per minute ", new Date());
-  await CourseController.subscriptions()
-}, {
-  scheduled: true,
-});
+// cron.schedule("* * * * *", async () => {
+//   console.log("per minute ", new Date());
+//   await CourseController.subscriptions()
+// }, {
+//   scheduled: true,
+// });
